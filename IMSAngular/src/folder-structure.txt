@@ -1,0 +1,181 @@
+Folder PATH listing for volume Local Disk
+Volume serial number is 10F5-CC81
+D:.
+³   folder-structure.txt
+³   index.html
+³   main.ts
+³   styles.scss
+³   
+ÀÄÄÄapp
+    ³   app.component.html
+    ³   app.component.scss
+    ³   app.component.spec.ts
+    ³   app.component.ts
+    ³   app.config.ts
+    ³   app.routes.ts
+    ³   
+    ÃÄÄÄcore
+    ³   ³   core.module.ts
+    ³   ³   
+    ³   ÃÄÄÄguards
+    ³   ³       auth.guard.spec.ts
+    ³   ³       auth.guard.ts
+    ³   ³       
+    ³   ÃÄÄÄinterceptors
+    ³   ÀÄÄÄservices
+    ³           api.service.spec.ts
+    ³           api.service.ts
+    ³           auth.service.spec.ts
+    ³           auth.service.ts
+    ³           
+    ÃÄÄÄfeatures
+    ³   ÃÄÄÄauth
+    ³   ³   ³   auth-routing.module.ts
+    ³   ³   ³   auth.module.ts
+    ³   ³   ³   
+    ³   ³   ÀÄÄÄlogin
+    ³   ³           login.component.html
+    ³   ³           login.component.scss
+    ³   ³           login.component.spec.ts
+    ³   ³           login.component.ts
+    ³   ³           
+    ³   ÃÄÄÄbranches
+    ³   ³   ³   branches-routing.module.ts
+    ³   ³   ³   branches.module.ts
+    ³   ³   ³   
+    ³   ³   ÃÄÄÄform
+    ³   ³   ³       branch-form.component.html
+    ³   ³   ³       branch-form.component.scss
+    ³   ³   ³       branch-form.component.spec.ts
+    ³   ³   ³       branch-form.component.ts
+    ³   ³   ³       
+    ³   ³   ÀÄÄÄlist
+    ³   ³           branch-list.component.html
+    ³   ³           branch-list.component.scss
+    ³   ³           branch-list.component.spec.ts
+    ³   ³           branch-list.component.ts
+    ³   ³           
+    ³   ÃÄÄÄdashboard
+    ³   ³   ³   dashboard-routing.module.ts
+    ³   ³   ³   dashboard.module.ts
+    ³   ³   ³   
+    ³   ³   ÀÄÄÄmain
+    ³   ³           main.component.html
+    ³   ³           main.component.scss
+    ³   ³           main.component.spec.ts
+    ³   ³           main.component.ts
+    ³   ³           
+    ³   ÃÄÄÄinventory
+    ³   ³   ³   inventory-routing.module.ts
+    ³   ³   ³   inventory.module.ts
+    ³   ³   ³   
+    ³   ³   ÃÄÄÄform
+    ³   ³   ³       inventory-form.component.html
+    ³   ³   ³       inventory-form.component.scss
+    ³   ³   ³       inventory-form.component.spec.ts
+    ³   ³   ³       inventory-form.component.ts
+    ³   ³   ³       
+    ³   ³   ÀÄÄÄlist
+    ³   ³           inventory-list.component.html
+    ³   ³           inventory-list.component.scss
+    ³   ³           inventory-list.component.spec.ts
+    ³   ³           inventory-list.component.ts
+    ³   ³           
+    ³   ÃÄÄÄreports
+    ³   ³   ³   reports-routing.module.ts
+    ³   ³   ³   reports.module.ts
+    ³   ³   ³   
+    ³   ³   ÃÄÄÄcharts
+    ³   ³   ³       charts.component.html
+    ³   ³   ³       charts.component.scss
+    ³   ³   ³       charts.component.spec.ts
+    ³   ³   ³       charts.component.ts
+    ³   ³   ³       
+    ³   ³   ÃÄÄÄdashboard
+    ³   ³   ³       dashboard.component.html
+    ³   ³   ³       dashboard.component.ts
+    ³   ³   ³       
+    ³   ³   ÀÄÄÄsummary
+    ³   ³           summary.component.html
+    ³   ³           summary.component.scss
+    ³   ³           summary.component.spec.ts
+    ³   ³           summary.component.ts
+    ³   ³           
+    ³   ÃÄÄÄsales
+    ³   ³   ³   sales-routing.module.ts
+    ³   ³   ³   sales.module.ts
+    ³   ³   ³   
+    ³   ³   ÃÄÄÄform
+    ³   ³   ³       sales-form.component.html
+    ³   ³   ³       sales-form.component.scss
+    ³   ³   ³       sales-form.component.spec.ts
+    ³   ³   ³       sales-form.component.ts
+    ³   ³   ³       
+    ³   ³   ÃÄÄÄlist
+    ³   ³   ³       sales-list.component.html
+    ³   ³   ³       sales-list.component.scss
+    ³   ³   ³       sales-list.component.spec.ts
+    ³   ³   ³       sales-list.component.ts
+    ³   ³   ³       
+    ³   ³   ÀÄÄÄreport
+    ³   ³           report.component.html
+    ³   ³           report.component.scss
+    ³   ³           report.component.spec.ts
+    ³   ³           report.component.ts
+    ³   ³           
+    ³   ÃÄÄÄtransfers
+    ³   ³   ³   transfers-routing.module.ts
+    ³   ³   ³   transfers.module.ts
+    ³   ³   ³   
+    ³   ³   ÃÄÄÄdetail
+    ³   ³   ³       transfer-detail.component.html
+    ³   ³   ³       transfer-detail.component.scss
+    ³   ³   ³       transfer-detail.component.spec.ts
+    ³   ³   ³       transfer-detail.component.ts
+    ³   ³   ³       
+    ³   ³   ÃÄÄÄform
+    ³   ³   ³       transfer-form.component.html
+    ³   ³   ³       transfer-form.component.scss
+    ³   ³   ³       transfer-form.component.spec.ts
+    ³   ³   ³       transfer-form.component.ts
+    ³   ³   ³       
+    ³   ³   ÀÄÄÄlist
+    ³   ³           transfer-list.component.html
+    ³   ³           transfer-list.component.scss
+    ³   ³           transfer-list.component.spec.ts
+    ³   ³           transfer-list.component.ts
+    ³   ³           
+    ³   ÀÄÄÄusers
+    ³       ³   users-routing.module.ts
+    ³       ³   users.module.ts
+    ³       ³   
+    ³       ÃÄÄÄform
+    ³       ³       user-form.component.html
+    ³       ³       user-form.component.scss
+    ³       ³       user-form.component.spec.ts
+    ³       ³       user-form.component.ts
+    ³       ³       
+    ³       ÃÄÄÄlist
+    ³       ³       user-list.component.html
+    ³       ³       user-list.component.scss
+    ³       ³       user-list.component.spec.ts
+    ³       ³       user-list.component.ts
+    ³       ³       
+    ³       ÀÄÄÄroles
+    ³               roles.component.html
+    ³               roles.component.scss
+    ³               roles.component.spec.ts
+    ³               roles.component.ts
+    ³               
+    ÃÄÄÄshared
+    ³   ³   shared.module.ts
+    ³   ³   
+    ³   ÃÄÄÄcomponents
+    ³   ÃÄÄÄdirectives
+    ³   ÃÄÄÄmaterial
+    ³   ³       material.module.ts
+    ³   ³       
+    ³   ÀÄÄÄpipes
+    ÀÄÄÄsrc
+        ÀÄÄÄapp
+            ÀÄÄÄfeatures

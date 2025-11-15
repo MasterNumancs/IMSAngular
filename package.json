@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@angular/fire": "^20.0.1",
+    "chart.js": "^4.4.9",
+    "firebase": "^11.9.1"
+  }
+}
