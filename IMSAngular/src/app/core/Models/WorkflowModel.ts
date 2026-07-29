@@ -1,7 +1,7 @@
 export interface WorkflowRequest {
   requestId?: string;
   moduleId: string;
-  requestType: 'StockIn' | 'StockOut';
+  requestType: 'StockIn' | 'StockOut' | 'SaleIn' | 'SaleOut';
   status: 'Pending' | 'Approved' | 'Rejected';
   requestedBy: string;
   requestedOn: Date;

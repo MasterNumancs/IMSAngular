@@ -54,10 +54,31 @@
         <span>Transfers</span>
       </a>
       
-      <a mat-list-item routerLink="/sales" routerLinkActive="active">
-        <mat-icon>point_of_sale</mat-icon>
-        <span>Sales</span>
-      </a>
+     <mat-expansion-panel class="no-border">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon>point_of_sale</mat-icon>
+      <span style="margin-left: 8px;">Sales</span>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-action-list>
+    <a mat-list-item routerLink="/sales" routerLinkActive="active">
+      <mat-icon>dashboard</mat-icon>
+      <span>Overview</span>
+    </a>
+
+    <a mat-list-item routerLink="/sales/sales-in" routerLinkActive="active">
+      <mat-icon>add_shopping_cart</mat-icon>
+      <span>Sale-In</span>
+    </a>
+
+    <a mat-list-item routerLink="/sales/sales-out" routerLinkActive="active">
+      <mat-icon>remove_shopping_cart</mat-icon>
+      <span>SalesOut</span>
+    </a>
+  </mat-action-list>
+</mat-expansion-panel>
 
       <mat-expansion-panel class="no-border">
         <mat-expansion-panel-header>
