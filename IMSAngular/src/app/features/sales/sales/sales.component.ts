@@ -20,7 +20,7 @@ import { WorkflowService } from '../../../core/services/Workflow.service';
 import { LoadingService } from '../../../core/services/Loading.service';
 
 @Component({
-  selector: 'app-sale-out',
+  selector: 'app-sales',
   standalone: true,
   imports: [
     CommonModule,
@@ -33,34 +33,25 @@ import { LoadingService } from '../../../core/services/Loading.service';
     MatTableModule,
     MatButtonModule,
     MatCardModule,
-    MatNativeDateModule,
+    MatNativeDateModule, 
     FormsModule
   ],
-  templateUrl: './sales-out.component.html',
-  styleUrls: ['./sales-out.component.scss']
+ templateUrl: './sales.component.html',
+styleUrls: ['./sales.component.scss']
 })
-export class SalesOutComponent implements OnInit {
-
+export class SalesComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
-  displayedColumns: string[] = [
-    'product',
-    'description',
-    'quantity',
-    'reason',
-    'comments',
-    'unitPrice',
-    'discount',
-    'total',
-    'actions'
-  ];
-  salesOutForm!: FormGroup;
+  displayedColumns: string[] = ['product', 'description', 'quantity', 'unitPrice', 'discount', 'total', 'actions'];
+  salesForm!: FormGroup;
   branches: any[] = [];
   customers: any[] = [];
   saleDetails: any[] = [];
+
   subTotal = 0;
   discountType: 'amount' | 'percentage' = 'amount';
   discountValue = 0;
   netTotal = 0;
+
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
@@ -70,81 +61,84 @@ export class SalesOutComponent implements OnInit {
     private _workflowService: WorkflowService,
     private _loadingService: LoadingService
   ) { }
-  async ngOnInit(): Promise<void> {
 
-    this.salesOutForm = this.fb.group({
+  async ngOnInit(): Promise<void> {
+    this.salesForm = this.fb.group({
       branch: ['', Validators.required],
       customer: ['', Validators.required],
       date: [new Date(), Validators.required]
     });
+
     this.branches = await this.branchService.getBranches();
     this.customers = await this.customerService.getCustomers();
-
   }
-  openProductDialog(): void {
 
+  openProductDialog(): void {
     const dialogRef = this.dialog.open(ItemSearchModalComponent, {
       width: '800px',
       data: {}
     });
+  
     dialogRef.afterClosed().subscribe(result => {
-
       if (Array.isArray(result) && result.length) {
-
         const updatedData = [...this.dataSource.data];
+
         result.forEach(product => {
           const existing = updatedData.find(item => item.id === product.id);
+
           if (!existing) {
             updatedData.push({
               ...product,
               quantity: 1,
               unitPrice: product.price || 0,
               discount: 0,
-              total: product.price || 0,
-              reason: '',
-              comments: ''
+              total: product.price || 0
             });
           }
         });
+  
         this.dataSource.data = updatedData;
         this.recalculateTotal();
-
       }
     });
   }
-  updateRowTotal(row: any): void {
 
+  updateRowTotal(row: any): void {
     const quantity = Number(row.quantity) || 0;
     const unitPrice = Number(row.unitPrice) || 0;
     const discount = Number(row.discount) || 0;
+
     row.total = (quantity * unitPrice) - discount;
+
     this.recalculateTotal();
   }
+
   recalculateTotal(): void {
-    this.subTotal = this.dataSource.data.reduce(
-      (sum, item) => sum + (item.total || 0),
-      0
-    );
+    this.subTotal = this.dataSource.data.reduce((sum, item) => sum + (item.total || 0), 0);
+
     const discount =
       this.discountType === 'percentage'
         ? (this.subTotal * (Number(this.discountValue) || 0)) / 100
         : Number(this.discountValue) || 0;
-    this.netTotal = this.subTotal - discount;
 
+    this.netTotal = this.subTotal - discount;
   }
+
   removeProduct(row: any): void {
-    this.dataSource.data =
-      this.dataSource.data.filter(item => item !== row);
+    this.dataSource.data = this.dataSource.data.filter(item => item !== row);
     this.recalculateTotal();
   }
-  async submitSaleOut(): Promise<void> {
-    this._loadingService.show();
-    if (this.salesOutForm.invalid || this.dataSource.data.length === 0) {
-      this._loadingService.hide();
-      return;
-    }
+
+  async submitSale(): Promise<void> {
+
+  if (this.salesForm.invalid || this.dataSource.data.length === 0) {
+    return;
+  }
+
+  this._loadingService.show();
+  
     const payload = {
-      ...this.salesOutForm.value,
+      ...this.salesForm.value,
       saleItems: this.dataSource.data,
       TotalItems: this.dataSource.data.length,
       SubTotal: this.subTotal,
@@ -153,31 +147,33 @@ export class SalesOutComponent implements OnInit {
       NetTotal: this.netTotal,
       status: 'Pending',
       stocktype: 'out'
-
     };
+
     try {
       const sale_id = await this.stockService.addStockEntity(payload);
+
       await this._workflowService.createRequest({
         moduleId: sale_id,
-        requestType: 'SaleOut',
+        requestType: 'Sales',
         requestedBy: 'currentUserUid',
-        remarks: 'Auto-generated from Sale-Out screen'
+        remarks: 'Auto-generated from Sales screen'
+      });
 
-      });
-      alert('Sale-out entry added successfully');
+      alert('Sale entry added successfully');
+
       this.dataSource.data = [];
-      this.salesOutForm.reset({
-        date: new Date()
-      });
+      this.salesForm.reset({ date: new Date() });
+
       this.subTotal = 0;
       this.discountType = 'amount';
       this.discountValue = 0;
       this.netTotal = 0;
-    } catch (err) {
-      console.error('Error submitting sale out:', err);
-      alert('Failed to submit sale-out');
-    }
-    this._loadingService.hide();
 
+    } catch (err) {
+      console.error('Error submitting sale:', err);
+      alert('Failed to submit sale');
+    }
+
+    this._loadingService.hide();
   }
 }

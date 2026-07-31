@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { SalesListComponent } from './list/sales-list.component';
-import { SalesInComponent } from './sales-in/sales-in.component';
-import { SalesOutComponent } from './sales-out/sales-out.component';
+import { SalesComponent } from './sales/sales.component';
+import { SalesReturnComponent } from './sales-return/sales-return.component';
 
 const routes: Routes = [
   {
@@ -11,12 +11,12 @@ const routes: Routes = [
     component: SalesListComponent
   },
   {
-    path: 'sales-in',
-    component: SalesInComponent
+    path: 'sales',
+    component: SalesComponent
   },
   {
-    path: 'sales-out',
-    component: SalesOutComponent
+    path: 'sales-return',
+    component: SalesReturnComponent
   }
 ];
 

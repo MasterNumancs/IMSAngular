@@ -26,7 +26,7 @@ export class WorkflowService {
   /* ---------- Create a new request ---------------- */
   async createRequest(partial: {
     moduleId: string;
-    requestType: 'StockIn' | 'StockOut' | 'SaleIn' | 'SaleOut';
+    requestType: WorkflowRequest['requestType'];
     requestedBy: string;
     remarks?: string;
   }): Promise<string> {

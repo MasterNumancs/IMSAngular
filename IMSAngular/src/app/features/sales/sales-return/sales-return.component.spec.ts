@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StockOutComponent } from './stock-out.component';
+import { StockOutComponent } from './sales-return.component';
 
 describe('StockOutComponent', () => {
   let component: StockOutComponent;
