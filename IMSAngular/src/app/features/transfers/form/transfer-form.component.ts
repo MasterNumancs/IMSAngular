@@ -10,21 +10,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatListModule } from '@angular/material/list';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatDialogContent } from '@angular/material/dialog';
+
+import { StockService } from '../../../core/services/stock.service';
+import { BranchService } from '../../../core/services/branchservice.service';
+import { Branch } from '../../../core/Models/BranchModel';
+
 
 @Component({
   selector: 'app-transfer-form',
@@ -45,71 +36,326 @@ import { MatDialogContent } from '@angular/material/dialog';
   styleUrls: ['./transfer-form.component.scss']
 })
 export class TransferFormComponent implements OnInit {
+
   transferForm!: FormGroup;
-  availableLaptops: any[] = [];
-  selectedLaptops: any[] = [];
 
-  branches = [
-    { id: 1, name: 'Branch A' },
-    { id: 2, name: 'Branch B' },
-    { id: 3, name: 'Branch C' },
-    ];
-  
+  availableLaptops:any[] = [];
+  filteredLaptops:any[] = [];
+
+  selectedLaptops:any[] = [];
+
+  branches:Branch[] = [];
+
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<TransferFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
-  ngOnInit(): void {
+    private fb:FormBuilder,
+    private stockService:StockService,
+    private branchService:BranchService,
+    private dialogRef:MatDialogRef<TransferFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:any
+  ){}
+
+
+  async ngOnInit():Promise<void>{
+
     this.initForm();
-    this.loadAvailableLaptops();
+
+    this.branches =
+      await this.branchService.getBranches();
+
   }
 
-  initForm(): void {
-    this.transferForm = this.fb.group({
-      fromBranch: ['', [Validators.required]],
-      toBranch: ['', [Validators.required]],
-      reason: ['', [Validators.required]],
-      expectedDate: ['', [Validators.required]]
+
+
+  initForm(){
+
+    this.transferForm =
+    this.fb.group({
+
+      fromBranch:[
+        '',
+        Validators.required
+      ],
+
+      toBranch:[
+        '',
+        Validators.required
+      ],
+
+      reason:[
+        '',
+        Validators.required
+      ],
+
+      expectedDate:[
+        '',
+        Validators.required
+      ]
+
     });
+
   }
 
-  loadAvailableLaptops(): void {
-    // Load laptops from the selected branch
-  }
 
-  addLaptop(laptop: any): void {
-    if (!this.selectedLaptops.find(l => l.id === laptop.id)) {
-      this.selectedLaptops.push(laptop);
+
+
+  async loadAvailableLaptops(){
+
+    const branchId =
+    this.transferForm
+    .get('fromBranch')
+    ?.value;
+
+
+    if(!branchId){
+
+      this.availableLaptops=[];
+      this.filteredLaptops=[];
+      return;
+
     }
+
+
+    try{
+
+
+      const stock =
+      await this.stockService
+      .getStockOverviewByBranch(branchId);
+
+
+
+      this.availableLaptops =
+      stock
+      .filter(item=>item.quantity > 0)
+      .map(item=>({
+
+        id:item.productid,
+
+        productId:item.productid,
+
+        productName:item.productName,
+
+        brand:item.brandName,
+
+        quantity:item.quantity,
+
+        availableQuantity:item.quantity,
+
+        description:item.description,
+
+        price:item.price
+
+      }));
+
+
+      this.filteredLaptops =
+      [...this.availableLaptops];
+
+
+    }
+    catch(error){
+
+      console.error(
+        "Error loading inventory",
+        error
+      );
+
+    }
+
+
   }
 
-  removeLaptop(laptop: any): void {
-    this.selectedLaptops = this.selectedLaptops.filter(l => l.id !== laptop.id);
+
+
+
+
+  searchLaptop(event:any){
+
+    const value =
+    event.target.value
+    .toLowerCase();
+
+
+    this.filteredLaptops =
+    this.availableLaptops
+    .filter(item=>
+
+      item.productName
+      .toLowerCase()
+      .includes(value)
+
+      ||
+
+      item.brand
+      ?.toLowerCase()
+      .includes(value)
+
+    );
+
   }
 
-  onSubmit(): void {
-    if (this.transferForm.valid && this.selectedLaptops.length > 0) {
+
+
+
+  addLaptop(product:any){
+
+
+    const exists =
+    this.selectedLaptops
+    .find(
+      x=>x.productId===product.productId
+    );
+
+
+    if(!exists){
+
+
+      this.selectedLaptops.push({
+
+        productId:
+        product.productId,
+
+        productName:
+        product.productName,
+
+        brand:
+        product.brand,
+
+        quantity:1
+
+      });
+
+
+    }
+
+
+  }
+
+
+
+
+
+  removeLaptop(product:any){
+
+    this.selectedLaptops =
+    this.selectedLaptops
+    .filter(
+      x=>x.productId !== product.productId
+    );
+
+  }
+
+
+
+
+
+
+  onSubmit(){
+
+
+    if(
+      this.transferForm.valid &&
+      this.selectedLaptops.length>0
+    ){
+
+
+      const fromId =
+      this.transferForm.value.fromBranch;
+
+
+      const toId =
+      this.transferForm.value.toBranch;
+
+
+
+      const fromBranch =
+      this.branches.find(
+        b=>b.branchid===fromId
+      );
+
+
+
+      const toBranch =
+      this.branches.find(
+        b=>b.branchid===toId
+      );
+
+
+
       const transferData = {
+
+
         ...this.transferForm.value,
-        items: this.selectedLaptops
+
+
+        fromBranchName:
+        fromBranch?.name || '',
+
+
+        toBranchName:
+        toBranch?.name || '',
+
+
+        items:
+        this.selectedLaptops,
+
+
+        status:'Pending',
+
+
+        requestDate:new Date()
+
+
       };
-      this.dialogRef.close(transferData);
-    } else {
-      this.markFormGroupTouched(this.transferForm);
+
+
+
+      this.dialogRef.close(
+        transferData
+      );
+
     }
+    else{
+
+      this.markFormGroupTouched(
+        this.transferForm
+      );
+
+    }
+
+
   }
 
-  markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
+
+
+
+
+  markFormGroupTouched(formGroup:FormGroup){
+
+    Object.values(formGroup.controls)
+    .forEach(control=>{
+
       control.markAsTouched();
-      if (control instanceof FormGroup) {
+
+      if(control instanceof FormGroup){
+
         this.markFormGroupTouched(control);
+
       }
+
     });
+
+
   }
 
-  onCancel(): void {
+
+
+
+
+  onCancel(){
+
     this.dialogRef.close();
+
   }
-} 
+
+}
