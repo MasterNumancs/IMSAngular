@@ -38,7 +38,7 @@ import { RouterModule } from '@angular/router';
 })
 
 export class InventoryListComponent implements OnInit {
-  displayedColumns: string[] = ['branchName', 'productName', 'brand', 'description', 'price', 'quantity', 'alert'];
+  displayedColumns: string[] = ['branchName', 'productName', 'brand', 'description', 'price', 'quantity', 'balanceQuantity', 'reservedQuantity', 'alert'];
   dataSource = new MatTableDataSource<any>([]);
   branches: Branch[] = [];
   selectedBranchId: string = '';
@@ -81,9 +81,10 @@ export class InventoryListComponent implements OnInit {
     
     this.stockOverviewData = await this.stockService.getStockOverviewByBranch(this.selectedBranchId);
     this.stockOverviewData.forEach(item => {
-      item.alert = item.quantity <= 0
+      const onHand = item.balanceQuantity ?? item.quantity;
+      item.alert = onHand <= 0
       ? 'Empty'
-      : item.quantity < 5
+      : onHand < 5
       ? 'Low'
       : 'Healthy';
     });

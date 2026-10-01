@@ -33,22 +33,29 @@ export const routes: Routes = [
     }]
   },
   {
-    path: 'transfers',
-    loadChildren: () => import('./features/transfers/transfers.module').then(m => m.TransfersModule),
-  },
-  {
     path: 'sales',
     loadChildren: () => import('./features/sales/sales.module').then(m => m.SalesModule),
   },
   {
     path: 'reports',
     loadChildren: () => import('./features/reports/reports.module').then(m => m.ReportsModule),
-  },{
+  },  {
     path: 'requests',
-    loadComponent: () =>
-      import('./features/RequestManagement/request-management/request-management.component')
-        .then(m => m.RequestManagementComponent)
-  },  
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/RequestManagement/request-management/request-management.component')
+            .then(m => m.RequestManagementComponent)
+      },
+      {
+        path: 'new-transfer',
+        loadComponent: () =>
+          import('./features/RequestManagement/new-transfer-request/new-transfer-request.component')
+            .then(m => m.NewTransferRequestComponent)
+      }
+    ]
+  },
   {
     path: 'users',
     children: [{
@@ -76,6 +83,14 @@ export const routes: Routes = [
     {
       path: 'brand',
       loadComponent: () => import('./features/setup/brand-setup/brand-setup.component').then(m => m.BrandSetupComponent)
+    },
+    {
+      path: 'workflow-transitions',
+      loadComponent: () => import('./features/setup/workflow-transitions/workflow-transitions.component').then(m => m.WorkflowTransitionsComponent)
+    },
+    {
+      path: 'workflow-functions',
+      loadComponent: () => import('./features/setup/workflow-functions/workflow-functions.component').then(m => m.WorkflowFunctionsComponent)
     }]
   },
   {

@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
 import { WorkflowService } from '../../../core/services/Workflow.service';
+import { RequestType } from '../../../core/Models/WorkflowModel';
 import { LoadingService } from '../../../core/services/Loading.service';
 
 @Component({
@@ -145,21 +146,21 @@ export class SalesReturnComponent implements OnInit {
     }
     const payload = {
       ...this.salesReturnForm.value,
-      saleItems: this.dataSource.data,
+      stockItems: this.dataSource.data,
       TotalItems: this.dataSource.data.length,
       SubTotal: this.subTotal,
       DiscountType: this.discountType,
       DiscountValue: this.discountValue,
       NetTotal: this.netTotal,
       status: 'Pending',
-      stocktype: 'out'
+      stocktype: 'in'
 
     };
     try {
       const sale_id = await this.stockService.addStockEntity(payload);
       await this._workflowService.createRequest({
         moduleId: sale_id,
-        requestType: 'SalesReturn',
+        requestType: RequestType.SalesReturn,
         requestedBy: 'currentUserUid',
         remarks: 'Auto-generated from Sale-Return screen'
 

@@ -32,11 +32,12 @@ async getTransfers():Promise<Transfer[]>{
 }
 async addTransfer(
  transfer:Transfer
-):Promise<void>{
- await addDoc(
+):Promise<string>{
+ const ref = await addDoc(
   collection(firestore,this.topicName),
   transfer
  );
+ return ref.id;
 }
 async updateTransfer(
  transfer:Transfer
